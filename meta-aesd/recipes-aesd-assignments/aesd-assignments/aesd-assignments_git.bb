@@ -2,26 +2,22 @@
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-# TODO: Set this  with the path to your assignments rep.  Use ssh protocol and see lecture notes
-# about how to setup ssh-agent for passwordless access
-# SRC_URI = "git://git@github.com/cu-ecen-aeld/<your assignments repo>;protocol=ssh;branch=master"
+# Setting this  with the path to our assignments 3 repo, using ssh protocol and ssh-agent for passwordless access
+SRC_URI = "git://git@github.com/cu-ecen-aeld/assignments-3-and-later-biplavpoudel;protocol=ssh;branch=main"
 
 PV = "1.0+git${SRCPV}"
-# TODO: set to reference a specific commit hash in your assignment repo
-#SRCREV = "f99b82a5d4cb2a22810104f89d4126f52f4dfaba"
+# set to reference a specific commit hash in our assignment repo
+SRCREV = "e1a7b68161247701e5e0408486db68ba755f644c"
 
-# This sets your staging directory based on WORKDIR, where WORKDIR is defined at 
+# This sets our staging directory based on WORKDIR, where WORKDIR is defined at 
 # https://docs.yoctoproject.org/ref-manual/variables.html?highlight=workdir#term-WORKDIR
-# We reference the "server" directory here to build from the "server" directory
-# in your assignments repo
+# We reference the "server" directory here to build from the "server" directory in our assignments repo
 S = "${WORKDIR}/git/server"
 
-# TODO: Add the aesdsocket application and any other files you need to install
+# Adding the aesdsocket application and any other files we need to install
 # See https://git.yoctoproject.org/poky/plain/meta/conf/bitbake.conf?h=kirkstone
-#FILES:${PN} += "${bindir}/aesdsocket"
-# TODO: customize these as necessary for any libraries you need for your application
-# (and remove comment)
-#TARGET_LDFLAGS += "-pthread -lrt"
+FILES:${PN} += "${bindir}/aesdsocket"
+TARGET_LDFLAGS += "-pthread -lrt"
 
 do_configure () {
 	:
