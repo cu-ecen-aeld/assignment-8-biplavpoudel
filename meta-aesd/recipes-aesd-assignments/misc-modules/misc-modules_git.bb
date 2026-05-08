@@ -23,7 +23,7 @@ S = "${WORKDIR}/git"
 
 inherit module update-rc.d
 
-EXTRA_OEMAKE += "M=${S}/misc-modules"
+EXTRA_OEMAKE += "KERNELDIR=${STAGING_KERNEL_DIR} M=${S}/scull"
 
 # Init script config
 INITSCRIPT_PACKAGES = "${PN}"
