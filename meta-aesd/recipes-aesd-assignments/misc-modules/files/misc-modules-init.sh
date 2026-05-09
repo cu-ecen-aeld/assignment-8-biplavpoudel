@@ -5,13 +5,13 @@
 case "$1" in
     start)
         echo "Loading misc-modules"
-        faulty_load || exit 1
+        module_load faulty || exit 1
         modprobe hello || exit 1        #Loading hello module using modprobe
         ;;
 
     stop)
         echo "Unloading misc-modules"
-        faulty_unload
+        module_unload faulty
         rmmod hello 2>/dev/null
         ;;
 

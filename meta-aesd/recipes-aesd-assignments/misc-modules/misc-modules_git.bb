@@ -17,13 +17,17 @@ SRC_URI = "git://github.com/cu-ecen-aeld/assignment-7-biplavpoudel.git;protocol=
 
 # Modify these as desired
 PV = "1.0+git${SRCPV}"
-SRCREV = "a336fded1af28acee682e91b940f671be70386ed"
+SRCREV = "ba0562a42dd438e140ba1c701fb88963fe5cbcbd"
 
 S = "${WORKDIR}/git"
 
 inherit module update-rc.d
 
-EXTRA_OEMAKE += " -C ${STAGING_KERNEL_DIR} M=${S}/misc-modules"
+FILES:${PN} += "${sysconfdir}/init.d/misc-modules"
+FILES:${PN} += "${bindir}/module_load"
+FILES:${PN} += "${bindir}/module_unload"
+
+EXTRA_OEMAKE += " -C ${STAGING_KERNEL_DIR} M=${S}/misc-modules EXTRA_CFLAGS=-I${S}/include"
 
 # Init script config
 INITSCRIPT_PACKAGES = "${PN}"
@@ -41,5 +45,5 @@ do_install () {
 	install -m 0755 ${WORKDIR}/misc-modules-init.sh ${D}${sysconfdir}/init.d/misc-modules
 
     	install -m 0755 ${S}/misc-modules/module_load  ${D}${bindir}/module_load
-    	install -m 0755 ${S}/misc-modules/module_unload  ${D}${bindir}/module_load
+    	install -m 0755 ${S}/misc-modules/module_unload  ${D}${bindir}/module_unload
 }

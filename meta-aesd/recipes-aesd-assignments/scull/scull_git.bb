@@ -18,13 +18,17 @@ SRC_URI = "git://github.com/cu-ecen-aeld/assignment-7-biplavpoudel.git;protocol=
 
 # Modify these as desired
 PV = "1.0+git${SRCPV}"
-SRCREV = "a336fded1af28acee682e91b940f671be70386ed"
+SRCREV = "ba0562a42dd438e140ba1c701fb88963fe5cbcbd"
 
 S = "${WORKDIR}/git"
 
 inherit module update-rc.d
 
-EXTRA_OEMAKE += " -C ${STAGING_KERNEL_DIR} M=${S}/scull"
+FILES:${PN} += "${sysconfdir}/init.d/scull"
+FILES:${PN} += "${bindir}/scull_load"
+FILES:${PN} += "${bindir}/scull_unload"
+
+EXTRA_OEMAKE += " -C ${STAGING_KERNEL_DIR} M=${S}/scull EXTRA_CFLAGS=-I${S}/include"
 
 # Init script config
 INITSCRIPT_PACKAGES = "${PN}"
