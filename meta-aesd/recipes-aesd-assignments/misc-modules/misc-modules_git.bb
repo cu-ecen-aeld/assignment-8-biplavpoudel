@@ -23,22 +23,23 @@ S = "${WORKDIR}/git"
 
 inherit module update-rc.d
 
-EXTRA_OEMAKE += "KERNELDIR=${STAGING_KERNEL_DIR} M=${S}/scull"
+EXTRA_OEMAKE += " -C ${STAGING_KERNEL_DIR} M=${S}/misc-modules"
 
 # Init script config
 INITSCRIPT_PACKAGES = "${PN}"
-INITSCRIPT_NAME = "scull"
+INITSCRIPT_NAME = "misc-modules"
 INITSCRIPT_PARAMS = "defaults 90"
 
 #Linker flags
 TARGET_LDFLAGS += "-pthread -lrt"
 
 do_install () {
+	module_do_install
 	install -d ${D}${bindir}
 	install -d ${D}${sysconfdir}/init.d
 
 	install -m 0755 ${WORKDIR}/misc-modules-init.sh ${D}${sysconfdir}/init.d/misc-modules
 
-    install -m 0755 ${S}/misc-modules/module_load  ${D}${bindir}/module_load
-    install -m 0755 ${S}/misc-modules/module_unload  ${D}${bindir}/module_load
+    	install -m 0755 ${S}/misc-modules/module_load  ${D}${bindir}/module_load
+    	install -m 0755 ${S}/misc-modules/module_unload  ${D}${bindir}/module_load
 }

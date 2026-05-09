@@ -24,7 +24,7 @@ S = "${WORKDIR}/git"
 
 inherit module update-rc.d
 
-EXTRA_OEMAKE += "KERNELDIR=${STAGING_KERNEL_DIR} M=${S}/scull"
+EXTRA_OEMAKE += " -C ${STAGING_KERNEL_DIR} M=${S}/scull"
 
 # Init script config
 INITSCRIPT_PACKAGES = "${PN}"
@@ -35,11 +35,12 @@ INITSCRIPT_PARAMS = "defaults 90"
 TARGET_LDFLAGS += "-pthread -lrt"
 
 do_install () {
+	module_do_install
 	install -d ${D}${bindir}
 	install -d ${D}${sysconfdir}/init.d
 
 	install -m 0755 ${WORKDIR}/scull-init.sh ${D}${sysconfdir}/init.d/scull
 
-    install -m 0755 ${S}/scull/scull_load ${D}${bindir}/scull_load
-    install -m 0755 ${S}/scull/scull_unload ${D}${bindir}/scull_unload
+    	install -m 0755 ${S}/scull/scull_load ${D}${bindir}/scull_load
+    	install -m 0755 ${S}/scull/scull_unload ${D}${bindir}/scull_unload
 }
