@@ -19,31 +19,29 @@ SRC_URI = "git://github.com/cu-ecen-aeld/assignment-7-biplavpoudel.git;protocol=
 PV = "1.0+git${SRCPV}"
 SRCREV = "ba0562a42dd438e140ba1c701fb88963fe5cbcbd"
 
-S = "${WORKDIR}/git"
+S = "${WORKDIR}/git/misc-modules"
 
 inherit module update-rc.d
 
-FILES:${PN} += "${sysconfdir}/init.d/misc-modules"
-FILES:${PN} += "${bindir}/module_load"
-FILES:${PN} += "${bindir}/module_unload"
+# redundant for default paths >>>>
+# FILES:${PN} += "${sysconfdir}/init.d/misc-modules"
+# FILES:${PN} += "${bindir}/module_load"
+# FILES:${PN} += "${bindir}/module_unload"
 
-EXTRA_OEMAKE += " -C ${STAGING_KERNEL_DIR} M=${S}/misc-modules EXTRA_CFLAGS=-I${S}/include"
+# EXTRA_OEMAKE += " -C ${STAGING_KERNEL_DIR} M=${S}/misc-modules EXTRA_CFLAGS=-I${S}/include"
 
 # Init script config
 INITSCRIPT_PACKAGES = "${PN}"
 INITSCRIPT_NAME = "misc-modules"
 INITSCRIPT_PARAMS = "defaults 90"
 
-#Linker flags
-TARGET_LDFLAGS += "-pthread -lrt"
-
 do_install () {
 	module_do_install
-	install -d ${D}${bindir}
-	install -d ${D}${sysconfdir}/init.d
 
+	install -d ${D}${sysconfdir}/init.d
 	install -m 0755 ${WORKDIR}/misc-modules-init.sh ${D}${sysconfdir}/init.d/misc-modules
 
-    	install -m 0755 ${S}/misc-modules/module_load  ${D}${bindir}/module_load
-    	install -m 0755 ${S}/misc-modules/module_unload  ${D}${bindir}/module_unload
+	install -d ${D}${bindir}
+    install -m 0755 ${S}/module_load  ${D}${bindir}/
+    install -m 0755 ${S}/module_unload  ${D}${bindir}/
 }
