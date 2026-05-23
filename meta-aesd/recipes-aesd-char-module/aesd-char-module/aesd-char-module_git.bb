@@ -5,9 +5,7 @@
 # WARNING: the following LICENSE and LIC_FILES_CHKSUM values are best guesses - it is
 # your responsibility to verify that the values are complete and correct.
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=8ed1a118f474eea5e159b560c339329b \
-                    file://assignment-autotest/LICENSE;md5=cde0fddafb4332f35095da3d4fa989dd \
-                    file://assignment-autotest/Unity/LICENSE.txt;md5=b7dd0dffc9dda6a87fa96e6ba7f9ce6c"
+LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE;md5=8ed1a118f474eea5e159b560c339329b"
 
 SRC_URI = "git://github.com/cu-ecen-aeld/assignments-3-and-later-biplavpoudel.git;branch=main;protocol=https"
 
@@ -21,6 +19,13 @@ S = "${WORKDIR}/git/aesd-char-driver"
 # during do_compile, it runs: `make -C ${STAGING_KERNEL_DIR} M=${S} modules`
 # while, update-rc.d runs post-install steps that create start/stop symlinks in runlevel directories for aesdchar_init
 inherit module update-rc.d
+
+FILES:${PN} += "${sysconfdir}/init.d/aesdchar"
+FILES:${PN} += "${bindir}/aesdchar_load"
+FILES:${PN} += "${bindir}/aesdchar_unload"
+
+#EXTRA_OEMAKE line is what passes the correct kernel path to override the Makefile's default KERNELDIR ?= /lib/modules/$(shell uname -r)/build.
+EXTRA_OEMAKE += "-C ${STAGING_KERNEL_DIR} M=${S} EXTRA_CFLAGS=-I${S}/include"
 
 INITSCRIPT_PACKAGES = "${PN}"
 INITSCRIPT_NAME = "aesdchar"

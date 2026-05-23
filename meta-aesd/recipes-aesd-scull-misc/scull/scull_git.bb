@@ -28,6 +28,7 @@ FILES:${PN} += "${sysconfdir}/init.d/scull"
 FILES:${PN} += "${bindir}/scull_load"
 FILES:${PN} += "${bindir}/scull_unload"
 
+#EXTRA_OEMAKE line is what passes the correct kernel path to override the Makefile's default KERNELDIR ?= /lib/modules/$(shell uname -r)/build.
 EXTRA_OEMAKE += " -C ${STAGING_KERNEL_DIR} M=${S}/scull EXTRA_CFLAGS=-I${S}/include"
 
 # Init script config
@@ -36,7 +37,7 @@ INITSCRIPT_NAME = "scull"
 INITSCRIPT_PARAMS = "defaults 90"
 
 #Linker flags
-TARGET_LDFLAGS += "-pthread -lrt"
+#TARGET_LDFLAGS += "-pthread -lrti"
 
 do_install () {
 	module_do_install
